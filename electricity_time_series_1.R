@@ -282,7 +282,7 @@ elPlots2021 <- function() {
        plot(jd08307p$Tid,jd08307pV/1000,yaxt='n',type='l',col=4,xlim=c(1960,2020), ylim=c(0,150),lwd=3,xlab='År',ylab='TWh',main='Produksjon og forbruk')
        axis(2,at=seq(0,150,25))
        points(jd08307e$Tid,jd08307cV/1000,type='l',col=2,lwd=3,lty=2) 
-       legend(1960,142,legend=c('Total kraftproduksjon','Forbruk'),col=c(4,2),lwd=c(3,2),lty=c(1,2))
+       legend(1960,142,bg='white',legend=c('Total kraftproduksjon','Forbruk'),col=c(4,2),lwd=c(3,2),lty=c(1,2))
        
        grid()  
 
@@ -296,7 +296,7 @@ elPlots2021 <- function() {
        points(jd08307Tid,(jd08307waLV+jd08307hLV)/1000,type='l',col=5,lwd=2,lty=1)
        points(jd08307Tid,jd08307cLV/1000,type='l',col=2,lwd=5,lty=1)
        
-       legend(2008,155,legend=c('Vann+Vind+Varme','Vann+Varme','Vannkraft','Forbruk'),col=c(4,5,3,2),lwd=c(4,2,3,5),lty=c(1,1,1,1))
+       legend(2008,155,bg='white',legend=c('Vann+Vind+Varme','Vann+Varme','Vannkraft','Forbruk'),col=c(4,5,3,2),lwd=c(4,2,3,5),lty=c(1,1,1,1))
        
        grid()  
 
@@ -309,35 +309,55 @@ elPlots2021 <- function() {
        points(jd08307i$Tid,(jd08307eV-jd08307iV)/1000,type='l',col=1,lwd=3,lty=1)
        
      #  points(jd08307i$Tid,jd08307e$value-jd08307i$value,type='l',col=4,lwd=2,lty=2)
-        legend(1960,22,legend=c('Eksport','Import','Balanse, årlig'),col=c(3,2,1),lwd=c(2,2,3),lty=c(2,2,1))
+        legend(1960,22,bg='white',legend=c('Eksport','Import','Balanse, årlig'),col=c(3,2,1),lwd=c(2,2,3),lty=c(2,2,1))
        abline(0,0)
        grid()  
 
     }
 
+    barPlotBalance <- function() {
+     #   a <- barplot(eBalance,col= ifelse(eBalance < 0,"red","blue"), xaxt = "n", yaxt = "n")
+                                        #a <- barplot(eBalance)
+        par(mgp=c(2.3,0.7,0),mar=c(5,5,5,2)+0.1) 
+        eB <- c((jd08307eV-jd08307iV)/1000,20,17.5)
+         a <-    barplot(eB1,names=kpiTid,col= ifelse(eB1 < 0,"red","blue"),ylab="TWh",cex.lab=1.5,cex.axis=1.2,cex=1.3 ) 
+         
+    }
+
+    
     plotRealPrice <- function() {
 
-        
-        plot(jd03014a$Tid,jd03014b$value/jd03014a$value*100,col=2,type='l',lwd=3,xlab='År',ylab='Indeks,2015=100',main='Realpris og forbruk')  # Real price
-        points(jd08313a$Tid,jd08313a$value/jd08313a[15,]$value*100,col=4,type='l',lwd=3,lty=2) # Consumption
+        par(mgp=c(2.3,0.7,0),mar=c(5,5,5,2)+0.1)
+        plot(jd03014a$Tid,jd03014b$value/jd03014a$value*100,col=2,type='n',lwd=3,xlab='År',ylab='Indeks,2015=100',main='',cex.axis=1.3,cex.lab=1.7)  # Real price
         grid()
+        abline(100,0,lty=2)
+        points(jd03014a$Tid,jd03014b$value/jd03014a$value*100,col=2,type='l',lwd=4,)  # Real price
+        points(jd08313a$Tid,jd08313a$value/jd08313a[15,]$value*100,col=4,type='l',lwd=4,lty=3) # Consumption
+    
        # eB1 <- eBalance[eBalance[1,]>=jd03014a[1,]$Tid]
         eB1 <- eBalance[eBalance[,1]>=1979,]
       
         
         impMark <- ifelse(eB1[,2]<0,jd03014b$value/jd03014a$value*100,NA)
-        points(eB1[,1],impMark,col=2,lwd=2)
-        abline(100,0,lty=2)
-        legend(1980,140,legend=c('Realpris','Forbruk/innbygger'),col=c(2,4),lwd=c(3,3),lty=c(1,2))
+        points(eB1[,1],impMark,col=2,lwd=3,cex=2.2)
+   
+        legend(1980,170,bg='white',legend=c('Realpris','Forbruk/innbygger'),col=c(2,4),lwd=c(3,3),lty=c(1,3),cex=1.5)
        
         
     }
 
     plotScatSurplusPrice <- function()  {
-        plot(realElDf$eB1[27:43],realElDf$realEl[27:43],xlab='Nettoeksport, TWh',ylab='Realpris forbruker, 2015=100',pch=16,col=2,cex=2.4,cex.lab=1.4)
-        text(realElDf$eB1[39:43],realElDf$realEl[39:43]-3,labels=realElDf$kpiTid[39:43],cex=1.6)
+        rEDf <- realElDf[realElDf$kpiTid>2004,]
+        par(mgp=c(2.3,1,0),mar=c(5,5,5,2)+0.1)
+        plot(rEDf$eB1,rEDf$realEl,xlab='Nettoeksport, TWh',ylab='Realpris forbruker, 2015=100',pch=16,col=2,cex=2.6,cex.lab=1.4,type='n')
+        text(rEDf$eB1[13:17]-2,rEDf$realEl[13:17],labels=rEDf$kpiTid[13:17],cex=1.5)
         grid()
+        points(rEDf$eB1,rEDf$realEl,pch=16,col=2,cex=2.6,cex.lab=1.4)
+        rEDf[17,4] <- NA
+        rEDf[14,4] <- NA
 
+        xM1 <- lm(rEDf$realEl ~ rEDf$eB1)
+        abline(coef(xM1)[1],coef(xM1)[2],lty=2)
 
 
     }
@@ -430,18 +450,60 @@ elPlots2021 <- function() {
     
     X11(width=10,height=7)
     plotRealPrice()
-    dev.copy2eps(device=x11,file='virkel_nor_f2.eps') ; 
+    #dev.copy2eps(device=x11,file='virkel_nor_f2.eps') ; 
+    postscript('virkel_nor_f1.eps',width=11,height=8,onefile=TRUE, horizontal=TRUE) ; 
+    plotRealPrice() ;
+    dev.off() ;
 
+    pdf('virkel_nor_f1.pdf',width=11,height=8) ; 
+    plotRealPrice() ;
+    dev.off() ;
+
+    
     X11(width=10,height=7)
     plotProdWaterWind()
     dev.copy2eps(device=x11,file='vind_vann_nor_f1.eps') ; 
   
-    X11(width=9,height=9)
+    X11(width=11,height=9)
     plotScatSurplusPrice()
-    dev.copy2eps(device=x11,file='overskudd_pris_f1.eps') ; 
-  
-   write.csv(realElDf, "overskudd_pris_f1.csv") ;
-   realElDf
+    #dev.copy2eps(device=x11,file='overskudd_pris_f1.eps') ; 
+
+    pdf('overskudd_pris_f1.pdf',width=10,height=8)
+    plotScatSurplusPrice()
+    dev.off()
+
+    postscript('overskudd_pris_f1.eps',width=10,height=8,onefile=TRUE, horizontal=TRUE)
+    plotScatSurplusPrice()
+    dev.off()
+
+    svg('overskudd_pris_f1.svg',width=10,height=8)
+    plotScatSurplusPrice()
+    dev.off() 
+    
+    png('overskudd_pris_f1.png')
+    plotScatSurplusPrice()
+    dev.off()
+    
+
+    
+    rEDf <- realElDf[realElDf$kpiTid>2004,]
+    write.csv(realElDf, "overskudd_pris_f1.csv") ;
+    write.csv(rEDf, "overskudd_pris_2005-2021.csv") ;
+
+
+    X11() ;
+    barPlotBalance()
+
+    pdf('barplot_overskudd.pdf',width=11,height=8)
+    barPlotBalance()
+    dev.off()
+ 
+    postscript('barplot_overskudd.eps',width=11,height=8,onefile=TRUE, horizontal=TRUE)
+    barPlotBalance()
+    dev.off()
+    
+    
+   list(rD1=realElDf,rD2=rEDf)
 }
 
 

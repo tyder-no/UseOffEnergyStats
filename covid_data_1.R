@@ -24,7 +24,7 @@ nRakk <- c(3404,3974,3829,3755,3707,3930,3717,3855,3743,3686) # Number of animal
 dRateEst <- function(nDead=nDead2151,nInf=nInf2151) {
 
    dRate = nDead/nInf    
-   X11()
+   #X11()
    plot(ageGrp,log(dRate))
    summary(dR0 <- lm(log(dRate)~ageGrp))
 
@@ -56,7 +56,7 @@ testRakk <- function() {
 
     graphics.off()
     
-    X11(width=10,height=10)
+    #X11(width=10,height=10)
     plot(yrsRakk,swtRakk,ylim=c(20,40),col=2,xlab='År',ylab='Slaktevekt, kg',pch=16,cex=2.1,cex.lab=1.5)
     
     points(yrsRakk,cwtRakk,col=4,pch=16,cex=2.1)
@@ -66,7 +66,7 @@ testRakk <- function() {
     grid()
     legend(2011,40,legend=c('Simler >2år','Kalver'),col=c(2,4),pch=c(16,16),cex=2.1)
 
-    dev.copy2eps(device=x11,file='berlevaag_1.eps') ; 
+    #dev.copy2eps(device=x11,file='berlevaag_1.eps') ; 
 
     
     list(calves=cres,simler=sres,numR=nres)
