@@ -1,5 +1,5 @@
 # source("electricity_time_series_1.R")
-# token: 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
+# token: xxxx
 #
 #
 #
