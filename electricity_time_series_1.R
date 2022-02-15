@@ -1,29 +1,29 @@
-# source("pension_lifetimes_1.R")
-# source("pop_projections_1.R")
 # source("electricity_time_series_1.R")
-#
+# token: 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
 #
 #
 #
 #
 # source("ssb-json-tests-1.R")
+# source("pension_lifetimes_1.R")
+# source("pop_projections_1.R")
 
+library(httr)
+# rjstat is used for converting SSB JSON -> Data frame
+library(rjstat)
+# jsonlite is used mainly for converting metadata 
+library(jsonlite)
+# Reshape is used for filtering/transforming/grouping 
+library(reshape)
+#
+library(sqldf)
+#
 
-
+source("ssb-json-functions.R")
 
 #f96 <- castOnContentsCodeKjonn(massage01302()) 
 #f99 <- castOnContentsCodeKjonn(massage01313()) 
 #b2019 <- castOnContentsCodeKjonn(massage07459b())
-
-
-#f96[100:150,c(1:2,17:19)]
-#f96[100:150,c(1:2,20:23)]
-#f96[100:150,c(1:2,24:48)]
-#f96[100:150,c(1:2,49:70)]
-#f96[100:150,c(1:2,71:83)]
-#f96[100:150,c(1:2,84:93)]
-#f96[100:150,c(1:2,94:103)]
-
 
 ageGroup11 <- function(ds,prefix='grp') {
 
@@ -177,6 +177,152 @@ mkbg19 <- function() {
 #bfpanel(bf014,ylim1=c(100000,120000),ylim2=c(7000,12000),ylim3=c(1000,1600),ylim4=c(500,1500),mainTit='Sogn og fjordane, alle',plotFnm='fpanel_sof.png')
 
 
+
+
+fetchAndSave03014 <- function(){
+#    load(file=paste('Rd_meta/sdf_','03014','.Rdata',sep='')) # get mVL
+#    mVL$Tid$Slct[1] <- 10
+#    mVL$ContentsCode$Slct[1] = 10
+#    mVL$Region$Slct[1]=10
+#    q03014 <- createSearchFromDF(mVL)
+  q03014a <-
+   ' {
+  "query": [
+    {
+      "code": "Konsumgrp",
+      "selection": {
+        "filter": "vs:CoiCop2016niva1",
+        "values": []
+      }
+    },
+    {
+      "code": "ContentsCode",
+      "selection": {
+        "filter": "item",
+        "values": [
+          "KpiAar"
+        ]
+      }
+    }
+  ],
+  "response": {
+    "format": "json-stat"
+  }
+}'
+ q03014b <-
+'{
+  "query": [
+    {
+      "code": "Konsumgrp",
+      "selection": {
+        "filter": "vs:CoiCop2016niva4",
+        "values": [
+          "04.5.1"
+        ]
+      }
+    },
+    {
+      "code": "ContentsCode",
+      "selection": {
+        "filter": "item",
+        "values": [
+          "KpiAar"
+        ]
+      }
+    }
+  ],
+  "response": {
+    "format": "json-stat"
+  }
+}'
+    
+    jd03014a <- getJSONData("03014",q03014a)
+    jd03014b <- getJSONData("03014",q03014b)
+    
+    saveRDS(jd03014a,file=paste('Rd_data/jd_','03014a','.Rdata',sep=''))
+    saveRDS(jd03014b,file=paste('Rd_data/jd_','03014b','.Rdata',sep=''))
+    # load(file=paste('Rd_data/jd_','03014','.Rdata',sep=''))
+    # load(file=paste('Rd_data/jd_','03014b','.Rdata',sep=''))
+    
+    
+}
+
+
+fetchAndSave08307 <- function(){
+ #   load(file=paste('Rd_meta/sdf_','08307','.Rdata',sep='')) # get mVL
+ #   mVL$Tid$Slct[1] <- 10
+ #   mVL$ContentsCode$Slct[1] = 10
+ #   mVL$Region$Slct[1]=10
+ #   q08307 <- createSearchFromDF(mVL)
+   q08307 <-
+   '{
+    "query": [],
+    "response": {
+      "format": "json-stat"
+     }
+   }'
+
+    
+    jd08307 <- getJSONData("08307",q08307)
+    saveRDS(jd08307,file=paste('Rd_data/jd_','08307','.Rdata',sep=''))
+     # load(file=paste('Rd_data/jd_','08307','.Rdata',sep=''))
+}
+
+
+
+fetchAndSave08313 <- function(){
+ #   load(file=paste('Rd_meta/sdf_','08313','.Rdata',sep='')) # get mVL
+ #   mVL$Tid$Slct[1] <- 10
+ #   mVL$ContentsCode$Slct[1] = 10
+ #   mVL$Region$Slct[1]=10
+ #   q08313 <- createSearchFromDF(mVL)
+    q08313 <-
+   '{
+    "query": [],
+    "response": {
+      "format": "json-stat"
+     }
+   }'
+
+    
+    jd08313 <- getJSONData("08313",q08313)
+    saveRDS(jd08313,file=paste('Rd_data/jd_','08313','.Rdata',sep=''))
+ # load(file=paste('Rd_data/jd_','08313','.Rdata',sep=''))
+    
+}
+
+
+
+fetchAndSave12824 <- function(){
+   # load(file=paste('Rd_meta/sdf_','12824','.Rdata',sep='')) # get mVL
+   # mVL$Tid$Slct[1] <- 10
+   # mVL$ContentsCode$Slct[1] = 10
+   # mVL$Region$Slct[1]=10
+   # q12824 <- createSearchFromDF(mVL)
+  q12824 <-
+   '{
+    "query": [],
+    "response": {
+      "format": "json-stat"
+     }
+   }'
+
+    
+    jd12824 <- getJSONData("12824",q12824)
+    saveRDS(jd12824,file=paste('Rd_data/jd_','12824','.Rdata',sep=''))
+
+     # load(file=paste('Rd_data/jd_','12824','.Rdata',sep=''))
+}
+
+   # load(file=paste('Rd_data/jd_','03014','.Rdata',sep=''))
+   # load(file=paste('Rd_data/jd_','03014b','.Rdata',sep=''))
+   # load(file=paste('Rd_data/jd_','08307','.Rdata',sep=''))
+   # load(file=paste('Rd_data/jd_','08313','.Rdata',sep=''))
+   # load(file=paste('Rd_data/jd_','12824','.Rdata',sep=''))
+
+
+
+
 bfpanel <- function(dfc,ylim1=c(11000,17000),ylim2=c(800,1600),ylim3=c(100,200),ylim4=c(0,150),mainTit='Hele landet, alle',plotFnm='fpanel_no.png') { 
 
     
@@ -263,14 +409,84 @@ pltboth <- function() {
 }
 
 
-elFetct2021 <- function() {
+elFetch2021 <- function() {
 
     fetchAndSave08307()
-    fetchAndSave08313a()
-    fetchAndSave03014b()
-    fetchAndSave03014a() 
- 
+    fetchAndSave08313()
+    fetchAndSave03014()
+    fetchAndSave12824() 
 
+}
+
+
+realPricePlots <- function() {
+
+   plotRealPrice <- function() {
+
+        par(mgp=c(2.3,0.7,0),mar=c(5,5,5,2)+0.1)
+        plot(allEl$kpiTid,allEl$realEl,col=2,type='n',lwd=3,xlab='År',ylab='Indeks,2015=100',main='',cex.axis=1.3,cex.lab=1.7)  # Real price
+        grid()
+        abline(100,0,lty=2)
+        points(allEl$kpiTid,allEl$realEl,col=2,type='l',lwd=5,)  # Real price
+        points(allEl$kpiTid,allEl$relConsEl,col=4,type='l',lwd=6,lty=2) # Consumption
+        eB1 <- eBalance[eBalance[,1]>=1979,]
+        impMark <- ifelse(eB1[,2]<0,jd03014b$value/jd03014a$value*100,NA)
+        points(eB1[,1],impMark,col=2,lwd=3,cex=2.2)
+   
+        legend(1980,170,bg='white',legend=c('Realpris','Forbruk/innbygger'),col=c(2,4),lwd=c(5,6),lty=c(1,2),cex=1.5)
+       
+    }
+
+ 
+    jd08307=readRDS(file=paste('Rd_data/jd_','08307','.Rdata',sep=''))
+    jd08313=readRDS(file=paste('Rd_data/jd_','08313','.Rdata',sep='')) 
+    jd03014b=readRDS(file=paste('Rd_data/jd_','03014b','.Rdata',sep='')) 
+    jd03014a=readRDS(file=paste('Rd_data/jd_','03014a','.Rdata',sep=''))
+    jd12824=readRDS(file=paste('Rd_data/jd_','12824','.Rdata',sep=''))
+
+    jd08307i <- jd08307[jd08307$ContentsCode=='Import',]
+    jd08307e <- jd08307[jd08307$ContentsCode=='Eksport',]
+    # Compute balance from Import/Export in 08307
+    eBalance <-cbind( as.numeric(jd08307e$Tid), as.numeric(jd08307e$value - jd08307i$value))  
+    eBalance <-rbind(eBalance,c(2021,17500))
+    # Real price index of consumer El
+    kpiTid <- jd03014a$Tid ; kpiTot <- jd03014a$value ; kpiEl <- jd03014b$value ; realEl <- kpiEl/kpiTot*100 ;
+    eB1 <- eBalance[eBalance[,1]>=1979,2]
+    realElDf <- cbind.data.frame(kpiTid,kpiTot,kpiEl,realEl,eB1)
+    # Consumption, absolute and relative
+    relConsEl <- jd08313$value/jd08313[22,]$value*100; consEl <- jd08313$value ; Tid <- jd08313$Tid ;
+    consDf <- cbind.data.frame(Tid,consEl,relConsEl) 
+ 
+    # Setup SQL for joining
+    join_El <- "select a.*,consDf.consEl,consDf.relConsEl from realElDf a
+                 left join
+                 consDf on
+                 consDf.Tid = a.kpiTid"
+    # Execute SQL and save dataset
+    allEl <- sqldf(join_El,stringsAsFactors = FALSE)
+    write.csv(allEl, "overskudd_pris_forbruk.csv") ;
+
+    graphics.off()
+    X11(width=11,height=8)
+    plotRealPrice()
+    #dev.copy2eps(device=x11,file='virkel_nor_f2.eps') ; 
+    postscript('virkel_nor_f2.eps',width=11,height=8,onefile=TRUE, horizontal=TRUE) ; 
+    plotRealPrice() ;
+    dev.off() ;
+    
+    png('virkel_nor_f2.png',width=1100,height=800) ; 
+    plotRealPrice() ;
+    dev.off() ;
+
+
+    
+    jpeg('virkel_nor_f2.jpg',width=1100,height=800) ; 
+    plotRealPrice() ;
+    dev.off() ;
+
+    
+
+    
 }
 
 
@@ -367,11 +583,11 @@ elPlots2021 <- function() {
     cv <- function(x) { sd(x)/mean(x) }
 
    
-    load(file=paste('Rd_data/jd_','08307','.Rdata',sep=''))
-    load(file=paste('Rd_data/jd_','08313a','.Rdata',sep='')) 
-    load(file=paste('Rd_data/jd_','03014b','.Rdata',sep='')) 
-    load(file=paste('Rd_data/jd_','03014a','.Rdata',sep=''))
-    load(file=paste('Rd_data/jd_','12824','.Rdata',sep=''))
+    jd08307=readRDS(file=paste('Rd_data/jd_','08307','.Rdata',sep=''))
+    jd08313a=readRDS(file=paste('Rd_data/jd_','08313','.Rdata',sep='')) 
+    jd03014b=readRDS(file=paste('Rd_data/jd_','03014b','.Rdata',sep='')) 
+    jd03014a=readRDS(file=paste('Rd_data/jd_','03014a','.Rdata',sep=''))
+    jd12824=readRDS(file=paste('Rd_data/jd_','12824','.Rdata',sep=''))
 
    
     
@@ -526,8 +742,8 @@ lifeTimePlots2021 <- function() {
 
 
     lTid <- seq(1850,2020,by=5)
-    load(file=paste('Rd_data/jd_','05862','.Rdata',sep=''))  
-    load(file=paste('Rd_data/jd_','05375','.Rdata',sep=''))  
+    jd03=readRDS(file=paste('Rd_data/jd_','05862','.Rdata',sep=''))  
+    jd03=readRDS(file=paste('Rd_data/jd_','05375','.Rdata',sep=''))  
 
     jd05862M <- jd05862[jd05862$Kjonn==1&jd05862$Tid>'1841-1850',]
     jd05862F <- jd05862[jd05862$Kjonn==2&jd05862$Tid>'1841-1850',]
@@ -549,7 +765,7 @@ lifeTimePlots2021 <- function() {
 
 plotWindData <- function() {
 
-    load(file=paste('Rd_data/jd_','12824','.Rdata',sep=''))
+    jd12824 <- readRDS(file=paste('Rd_data/jd_','12824','.Rdata',sep=''))
     jd12824 <- jd12824[jd12824$Tid>'2018M11',] 
     watSer <- jd12824[jd12824$Produk2=='01.01',]  
     heatSer <- jd12824[jd12824$Produk2=='01.02',]  
